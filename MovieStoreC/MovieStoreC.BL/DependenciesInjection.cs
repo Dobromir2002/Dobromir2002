@@ -1,15 +1,23 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MovieStoreC.DL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using MovieStoreC.BL.Interfaces;
 using MovieStoreC.BL.Services;
 
-namespace MovieStoreC.DL
+namespace MovieStoreC.BL
 {
     public static class DependenciesInjection
     {
-        public static void RegisterService(this IServiceCollection service)
+        public static IServiceCollection
+            RegisterServices(this IServiceCollection services)
         {
-            service.AddSingleton<IMoviesService, MoviesService>();
-
+            return
+                services.AddSingleton<IMoviesService,
+                    MoviesService>();
         }
     }
 }

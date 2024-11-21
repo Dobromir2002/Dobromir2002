@@ -6,10 +6,12 @@ namespace MovieStoreC.DL
 {
     public static class DependenciesInjection
     {
-        public static void RegisterRepostitories(this IServiceCollection service)
+        public static IServiceCollection 
+            RegisterRepositories(this IServiceCollection services)
         {
-            service.AddSingleton<IMovieRepository, MovieStaticDataRepository>();
-
+            return 
+                services.AddSingleton<IMovieRepository,
+                    MovieStaticDataRepository>();
         }
     }
 }
