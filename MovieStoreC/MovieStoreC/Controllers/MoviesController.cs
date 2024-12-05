@@ -21,17 +21,41 @@ namespace MovieStoreC.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetAll")]
-        public IEnumerable<Movie> GetAll()
+        public IMoviesService Get_movieService()
         {
-            return _movieService.GetAll();
+            return _movieService;
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("GetAll")]
+        public IActionResult<Movie> GetAll(IMoviesService _movieService)
+        {
+            var result = _movieService.GetAll();
+
+            if (result != null || result.Count <= 0)
+            {
+                return (IActionResult<Movie>)NotFound();
+            }
+            return (IActionResult<Movie>)Ok(result);
+        }
+
+        [HttpPost("Add")]
+        public IActionResult Add([FromBody] AddMovieRequest movie)
+        {
+            var movieDto = _mapper.Map<Movie>(movie);
+
+            _movieService.Add(movieDto);
+
+            return Ok(movieDto);
+        }
+
+        [HttpDelete("Delete")]
+        public void Delete(int id)
+        {
+            //return _movieService.GetById(id);
+        }
+
         [HttpGet("GetById")]
-        public IActionResult GetById(int id)
+        private IActionResult GetById(int id, IMoviesService _movieService)
         {
             if (id <= 0)
             {
@@ -46,20 +70,6 @@ namespace MovieStoreC.Controllers
             }
 
             return Ok(result);
-        }
-
-        [HttpPost("Add")]
-        public void Add([FromBody]AddMovieRequest movie)
-        {
-            var movieDto = _mapper.Map<Movie>(movie);
-
-            _movieService.Add(movieDto);
-        }
-
-        [HttpDelete("Delete")]
-        public void Delete(int id)
-        {
-            //return _movieService.GetById(id);
         }
     }
 }
