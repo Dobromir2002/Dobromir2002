@@ -1,3 +1,6 @@
+using Mapster;
+using MovieStoreC.BL;
+using MovieStoreC.BL.Interfaces;
 using MovieStoreC.DL;
 
 namespace MovieStoreC
@@ -9,10 +12,14 @@ namespace MovieStoreC
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.RegisterRepostitories();
-            builder.Services.RegisterService();
+            builder.Services
+                .RegisterRepositories()
+                .RegisterServices();
+
+            builder.Services.AddMapster();
 
             builder.Services.AddControllers();
+
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -22,6 +29,8 @@ namespace MovieStoreC
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+
             // Configure the HTTP request pipeline.
 
             app.UseAuthorization();
